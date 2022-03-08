@@ -2,6 +2,7 @@ import type { NextPage, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Banner from '../components/Banner';
 import Header from '../components/Header';
+import MediumCard from '../components/MediumCard';
 import SmallCard from '../components/SmallCard';
 
 interface IHome {
@@ -10,9 +11,16 @@ interface IHome {
 		location: string;
 		distance: string;
 	}[];
+
+	cardsData: {
+		img: string;
+		title: string;
+	}[];
 }
 
 const Home: NextPage<IHome> = (props) => {
+	const { exploreData, cardsData } = props;
+
 	return (
 		<div className=''>
 			<Head>
@@ -27,10 +35,17 @@ const Home: NextPage<IHome> = (props) => {
 				<section className='pt-6'>
 					<h2 className='text-4xl font-semibold pb-5'>Explore Nearby</h2>
 					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-						{props.exploreData?.map((item) => (
+						{exploreData?.map((item) => (
 							<SmallCard key={item.img} {...item} />
 						))}
 					</div>
+				</section>
+				
+        <section className='pt-6'>
+					<h2 className='text-4xl font-semibold pb-5'>Live Anywhere</h2>
+          {cardsData?.map(item => (
+            <MediumCard key={item.img} {...item}/>
+          ))}
 				</section>
 			</main>
 		</div>
@@ -43,9 +58,13 @@ export const getStaticProps: GetStaticProps = async () => {
 	const response = await fetch('https://links.papareact.com/pyp');
 	const exploreData = await response.json();
 
+	const response2 = await fetch('https://links.papareact.com/zp1');
+	const cardsData = await response2.json();
+
 	return {
 		props: {
 			exploreData,
+			cardsData,
 		},
 	};
 };
