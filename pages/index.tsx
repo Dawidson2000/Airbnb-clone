@@ -2,6 +2,7 @@ import type { NextPage, GetStaticProps } from 'next';
 import Head from 'next/head';
 import Banner from '../components/Banner';
 import Header from '../components/Header';
+import LargeCard from '../components/LargeCard';
 import MediumCard from '../components/MediumCard';
 import SmallCard from '../components/SmallCard';
 
@@ -49,6 +50,13 @@ const Home: NextPage<IHome> = (props) => {
 						))}
 					</div>
 				</section>
+
+				<LargeCard
+					img='https://links.papareact.com/pyp'
+					title='The Greatest Outdoors'
+					description='Wishlists curated by Airbnb.'
+          buttonText='Get Inspired'
+				/>
 			</main>
 		</div>
 	);
