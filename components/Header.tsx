@@ -92,7 +92,7 @@ const Header: FC<IHeader> = (props) => {
 				</div>
 			</div>
 			{searchInput && (
-				<div className='flex flex-col col-span-3 mx-auto'>
+				<div className='flex flex-col col-span-3 mx-auto rounded-xl shadow-sm p-4'>
 					<DateRangePicker
 						ranges={[delectionRange]}
 						minDate={new Date()}
@@ -113,13 +113,10 @@ const Header: FC<IHeader> = (props) => {
 						/>
 					</div>
 					<div className='flex'>
-						<button
-							onClick={cancelDatePicker}
-							className='flex-grow text-gray-500'
-						>
+						<button onClick={cancelDatePicker} className='flex-grow text-gray-500 hover:bg-red-400 rounded-md hover:text-white py-1 transition duration-100 ease-out'>
 							Cancel
 						</button>
-						<button onClick={search} className='flex-grow text-red-400'>Search</button>
+						<button onClick={search} className='flex-grow text-red-400 hover:bg-red-400 rounded-md hover:text-white py-1 transition duration-100 ease-out'>Search</button>
 					</div>
 				</div>
 			)}
