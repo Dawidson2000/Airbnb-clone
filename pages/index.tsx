@@ -30,7 +30,7 @@ const Home: NextPage<IHome> = (props) => {
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
-			<Header />
+			<Header/>
 			<Banner />
 
 			<main className='max-w-7xl mx-auto px-8 sm:px-16 bg-white rounded-2xl my-5 shadow-md'>
