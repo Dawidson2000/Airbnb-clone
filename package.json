@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@badrap/bar-of-progress": "^0.1.2",
     "@heroicons/react": "^1.0.6",
+    "bar-of-progress": "^1.1.0",
     "date-fns": "^2.28.0",
     "next": "12.1.0",
     "react": "^17.0.2",
