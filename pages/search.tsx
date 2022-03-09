@@ -5,6 +5,7 @@ import React from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import InfoCard from '../components/InfoCard';
+import Map from '../components/Map';
 
 interface ISearch {
 	searchResults: {
@@ -35,7 +36,7 @@ const Search: NextPage<ISearch> = (props) => {
 	return (
 		<>
 			<Header placeholder={`${location} | ${range} | ${noOfGuests} quests`} />
-			<main className='flex max-w-7xl mx-auto'>
+			<main className='flex'>
 				<section className='flex-grow pt-14 px-6'>
 					<p className='text-xs'>
 						300+ Stays - {range} - for {noOfGuests} quests
@@ -56,6 +57,10 @@ const Search: NextPage<ISearch> = (props) => {
 						))}
 					</div>
 				</section>
+
+        <section className='hidden xl:inline-flex xl:min-w-[600px]'>
+          <Map/>
+        </section>
 			</main>
 			<Footer />
 		</>
