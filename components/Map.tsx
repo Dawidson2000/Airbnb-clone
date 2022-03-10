@@ -49,7 +49,8 @@ const Map: FC<ISearch> = (props) => {
 							longitude={result.long}
 							latitude={result.lat}
 							closeOnClick={true}
-              closeButton={false}				
+              closeButton={false}
+              offset={[0, -15]}
 						>
 							{result.title}
 						</Popup>
