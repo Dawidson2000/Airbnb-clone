@@ -7,7 +7,7 @@ import Header from '../components/Header';
 import InfoCard from '../components/InfoCard';
 import Map from '../components/Map';
 
-interface ISearch {
+export interface ISearch {
 	searchResults: {
 		img: string;
 		location: string;
@@ -59,7 +59,7 @@ const Search: NextPage<ISearch> = (props) => {
 				</section>
 
         <section className='hidden xl:inline-flex xl:min-w-[600px]'>
-          <Map/>
+          <Map searchResults={props.searchResults}/>
         </section>
 			</main>
 			<Footer />
