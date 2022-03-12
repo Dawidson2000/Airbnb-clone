@@ -1,12 +1,18 @@
-import React, { FC, useState } from 'react';
-import ReactMapGL, { Marker, Popup } from 'react-map-gl';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import ReactMapGL, { MapRef, Marker, Popup } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { getCenter } from 'geolib';
 import { ISearch } from '../pages/search';
 import { LocationMarkerIcon } from '@heroicons/react/solid';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { locationActions } from '../store/location-slice';
+
 
 const Map: FC<ISearch> = (props) => {
 	const [selectedLocation, setSelectedLocation] = useState<any>({});
+	const location = useSelector((state: RootState) => state.location.location);
+	const mapRef = useRef<MapRef>() as any;
 
 	const coordinates = props.searchResults.map((result) => ({
 		longitude: result.long,
@@ -25,9 +31,29 @@ const Map: FC<ISearch> = (props) => {
 		longitude: center.longitude,
 		zoom: 11,
 	});
+  
+  const snapToLocation = useCallback((long, lat) => {
+    mapRef.current?.flyTo({center: [long, lat], duration: 1000});
+  }, []);
+
+  const dispatch = useDispatch();
+
+  const selectLocation = (long: number, lat: number) => {
+    dispatch(locationActions.selectLocation({
+      location: {
+        long,
+        lat
+      }
+    }))
+  };
+
+  useEffect(()=>{
+    snapToLocation(location.long, location.lat);
+  },[location])
 
 	return (
 		<ReactMapGL
+			ref={mapRef}
 			mapStyle='mapbox://styles/dawiddev/cl0jucjg4006414qbs0coo643'
 			mapboxAccessToken={process.env.mapbox_key}
 			{...viewport}
@@ -37,9 +63,14 @@ const Map: FC<ISearch> = (props) => {
 				<div key={result.long} className='cursor-pointer'>
 					<Marker longitude={result.long} latitude={result.lat}>
 						<LocationMarkerIcon
-							className='h-7 cursor-pointer text-red-600'
+							className={
+								location.long == result.long && location.lat === result.lat
+									? 'active_marker'
+									: 'marker'
+							}
 							onClick={() => {
 								setSelectedLocation(result);
+                selectLocation(result.long, result.lat);
 							}}
 							aria-label='location-marker'
 						/>
@@ -49,8 +80,8 @@ const Map: FC<ISearch> = (props) => {
 							longitude={result.long}
 							latitude={result.lat}
 							closeOnClick={true}
-              closeButton={false}
-              offset={[0, -15]}
+							closeButton={false}
+							offset={[0, -15]}
 						>
 							{result.title}
 						</Popup>

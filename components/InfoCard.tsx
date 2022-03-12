@@ -2,6 +2,9 @@ import Image from 'next/image';
 import React, { FC } from 'react';
 import { HeartIcon } from '@heroicons/react/outline';
 import { StarIcon } from '@heroicons/react/solid';
+import { useDispatch, useSelector } from "react-redux";
+import { locationActions } from '../store/location-slice';
+import { RootState } from '../store';
 
 interface IInfoCard {
 	img: string;
@@ -19,8 +22,21 @@ const InfoCard: FC<IInfoCard> = (props) => {
 	const { img, location, title, description, star, price, total, long, lat } =
 		props;
 
+    const dispatch = useDispatch();
+
+    const selectedLocation = useSelector((state: RootState) => state.location.location);
+
+    const selectLocation = () => {
+      dispatch(locationActions.selectLocation({
+        location: {
+          lat,
+          long
+        }
+      }))
+    };
+
 	return (
-		<div className='flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg rounded-xl transition duration-200 ease-out first:border-t last:mb-7'>
+		<div onClick={selectLocation} className={selectedLocation.long === long && selectedLocation.lat === lat ? 'active_infoCard' : 'infoCard'}>
 			<div className='relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0'>
 				<Image
 					className='rounded-2xl'

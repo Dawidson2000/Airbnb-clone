@@ -7,6 +7,7 @@ import LargeCard from '../components/LargeCard';
 import MediumCard from '../components/MediumCard';
 import SmallCard from '../components/SmallCard';
 
+
 interface IHome {
 	exploreData: {
 		img: string;

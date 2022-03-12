@@ -23,4 +23,16 @@ a {
 	.button {
 		@apply px-4 py-2 border rounded-full cursor-pointer hover:shadow-lg active:scale-95 active:bg-gray-100 transition transform duration-100 ease-out text-center;
 	}
+  .marker {
+    @apply h-7 cursor-pointer text-red-600
+  }
+  .active_marker {
+    @apply h-10 cursor-pointer text-red-600 animate-bounce
+  }
+  .infoCard {
+    @apply flex py-7 px-2 pr-4 border-b cursor-pointer hover:opacity-80 hover:shadow-lg rounded-xl transition duration-200 ease-out first:border-t last:mb-7
+  }
+  .active_infoCard {
+    @apply flex py-7 px-2 pr-4 border-b cursor-pointer opacity-80 shadow-lg rounded-xl transition duration-200 ease-out first:border-t last:mb-7
+  }
 }
