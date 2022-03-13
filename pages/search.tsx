@@ -36,8 +36,8 @@ const Search: NextPage<ISearch> = (props) => {
 	return (
 		<>
 			<Header placeholder={`${location} | ${range} | ${noOfGuests} quests`} />
-			<main className='flex'>
-				<section className='flex-grow pt-14 px-6'>
+			<main className='flex relative'>
+				<section className='flex-grow pt-14 px-6 height overflow-scroll scrollbar-hide'>
 					<p className='text-xs'>
 						300+ Stays - {range} - for {noOfGuests} quests
 					</p>

@@ -35,4 +35,7 @@ a {
   .active_infoCard {
     @apply flex py-7 px-2 pr-4 border-b cursor-pointer opacity-80 shadow-lg rounded-xl transition duration-200 ease-out first:border-t last:mb-7
   }
+  .height {
+    height: calc(100vh - 92px);
+  }
 }

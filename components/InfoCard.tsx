@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { HeartIcon } from '@heroicons/react/outline';
 import { StarIcon } from '@heroicons/react/solid';
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
 import { locationActions } from '../store/location-slice';
 import { RootState } from '../store';
 
@@ -19,24 +19,54 @@ interface IInfoCard {
 }
 
 const InfoCard: FC<IInfoCard> = (props) => {
-	const { img, location, title, description, star, price, total, long, lat } =
-		props;
+	const { img, location, title, description, star, price, total, long, lat } = props;
 
-    const dispatch = useDispatch();
+  const cardRef = useRef<HTMLDivElement>(null);
 
-    const selectedLocation = useSelector((state: RootState) => state.location.location);
+  const [isMouseOn, setIsMouseOn] = useState(false);
 
-    const selectLocation = () => {
-      dispatch(locationActions.selectLocation({
-        location: {
-          lat,
-          long
-        }
-      }))
-    };
+	const dispatch = useDispatch();
+
+	const selectedLocation = useSelector(
+		(state: RootState) => state.location.location
+	);
+
+	const selectLocation = (long: number | null, lat: number | null) => {
+		dispatch(
+			locationActions.selectLocation({
+				location: {
+					lat,
+					long,
+				},
+			})
+		);
+	};
+
+  useEffect(()=>{
+    !isMouseOn && 
+    cardRef.current?.scrollIntoView({
+      behavior: 'smooth',
+      block: "center"
+  });
+  },[selectedLocation])
 
 	return (
-		<div onClick={selectLocation} className={selectedLocation.long === long && selectedLocation.lat === lat ? 'active_infoCard' : 'infoCard'}>
+		<div
+      ref = {selectedLocation.lat === lat && selectedLocation.long === long ? cardRef : undefined}
+			onMouseEnter={() => {
+				selectLocation(long, lat);
+        setIsMouseOn(true);
+			}}
+      onMouseLeave={()=>{
+        setIsMouseOn(false);
+        selectLocation(null, null);
+      }}
+			className={
+				selectedLocation.long === long && selectedLocation.lat === lat
+					? 'active_infoCard'
+					: 'infoCard'
+			}
+		>
 			<div className='relative h-24 w-40 md:h-52 md:w-80 flex-shrink-0'>
 				<Image
 					className='rounded-2xl'

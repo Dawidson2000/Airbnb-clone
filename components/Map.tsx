@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import ReactMapGL, { MapRef, Marker, Popup } from 'react-map-gl';
+import ReactMapGL, { Marker, Popup, MapRef } from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { getCenter } from 'geolib';
 import { ISearch } from '../pages/search';
@@ -8,11 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { locationActions } from '../store/location-slice';
 
-
 const Map: FC<ISearch> = (props) => {
 	const [selectedLocation, setSelectedLocation] = useState<any>({});
 	const location = useSelector((state: RootState) => state.location.location);
-	const mapRef = useRef<MapRef>() as any;
+	const mapRef = useRef<MapRef>(null);
 
 	const coordinates = props.searchResults.map((result) => ({
 		longitude: result.long,
@@ -31,25 +30,27 @@ const Map: FC<ISearch> = (props) => {
 		longitude: center.longitude,
 		zoom: 11,
 	});
-  
-  const snapToLocation = useCallback((long, lat) => {
-    mapRef.current?.flyTo({center: [long, lat], duration: 1000});
-  }, []);
 
-  const dispatch = useDispatch();
+	const snapToLocation = useCallback((long, lat) => {
+		mapRef.current?.flyTo({ center: [long, lat]});
+	}, []);
 
-  const selectLocation = (long: number, lat: number) => {
-    dispatch(locationActions.selectLocation({
-      location: {
-        long,
-        lat
-      }
-    }))
-  };
+	const dispatch = useDispatch();
 
-  useEffect(()=>{
-    snapToLocation(location.long, location.lat);
-  },[location])
+	const selectLocation = (long: number | null, lat: number | null) => {
+		dispatch(
+			locationActions.selectLocation({
+				location: {
+					long,
+					lat,
+				},
+			})
+		);
+	};
+
+	useEffect(() => {
+		location.long && snapToLocation(location.long, location.lat);
+	}, [location]);
 
 	return (
 		<ReactMapGL
@@ -70,7 +71,7 @@ const Map: FC<ISearch> = (props) => {
 							}
 							onClick={() => {
 								setSelectedLocation(result);
-                selectLocation(result.long, result.lat);
+								selectLocation(result.long, result.lat);
 							}}
 							aria-label='location-marker'
 						/>
