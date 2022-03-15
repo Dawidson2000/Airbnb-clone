@@ -9,6 +9,7 @@ import Map from '../components/Map';
 
 export interface ISearch {
 	searchResults: {
+		id: number;
 		img: string;
 		location: string;
 		title: string;
@@ -22,6 +23,7 @@ export interface ISearch {
 }
 
 const Search: NextPage<ISearch> = (props) => {
+  console.log(props.searchResults);
 	const router = useRouter();
 
 	const { location, startDate, endDate, noOfGuests } = router.query;
@@ -58,9 +60,9 @@ const Search: NextPage<ISearch> = (props) => {
 					</div>
 				</section>
 
-        <section className='hidden xl:inline-flex xl:min-w-[600px]'>
-          <Map searchResults={props.searchResults}/>
-        </section>
+				<section className='hidden xl:inline-flex xl:min-w-[600px]'>
+					<Map searchResults={props.searchResults} />
+				</section>
 			</main>
 			<Footer />
 		</>
@@ -71,7 +73,8 @@ export default Search;
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const response = await fetch('https://links.papareact.com/isz');
-	const searchResults = await response.json();
+	const aaa = await response.json();
+	const searchResults = aaa.map((item: any, index: number) => ({id: index, ...item }));
 
 	return {
 		props: {

@@ -5,8 +5,10 @@ import { StarIcon } from '@heroicons/react/solid';
 import { useDispatch, useSelector } from 'react-redux';
 import { locationActions } from '../store/location-slice';
 import { RootState } from '../store';
+import { useRouter } from 'next/router';
 
 interface IInfoCard {
+  id: number
 	img: string;
 	location: string;
 	title: string;
@@ -19,11 +21,14 @@ interface IInfoCard {
 }
 
 const InfoCard: FC<IInfoCard> = (props) => {
-	const { img, location, title, description, star, price, total, long, lat } = props;
+	const { id, img, location, title, description, star, price, total, long, lat } =
+		props;
 
-  const cardRef = useRef<HTMLDivElement>(null);
+	const cardRef = useRef<HTMLDivElement>(null);
 
-  const [isMouseOn, setIsMouseOn] = useState(false);
+	const [isMouseOn, setIsMouseOn] = useState(false);
+
+	const router = useRouter();
 
 	const dispatch = useDispatch();
 
@@ -42,25 +47,39 @@ const InfoCard: FC<IInfoCard> = (props) => {
 		);
 	};
 
-  useEffect(()=>{
-    !isMouseOn && 
-    cardRef.current?.scrollIntoView({
-      behavior: 'smooth',
-      block: "center"
-  });
-  },[selectedLocation])
+	const room = () => {
+		router.push({
+			pathname: 'room',
+      query: {
+        id
+      }
+		});
+	};
+
+	useEffect(() => {
+		!isMouseOn &&
+			cardRef.current?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+			});
+	}, [selectedLocation]);
 
 	return (
 		<div
-      ref = {selectedLocation.lat === lat && selectedLocation.long === long ? cardRef : undefined}
+			ref={
+				selectedLocation.lat === lat && selectedLocation.long === long
+					? cardRef
+					: undefined
+			}
 			onMouseEnter={() => {
 				selectLocation(long, lat);
-        setIsMouseOn(true);
+				setIsMouseOn(true);
 			}}
-      onMouseLeave={()=>{
-        setIsMouseOn(false);
-        selectLocation(null, null);
-      }}
+			onMouseLeave={() => {
+				setIsMouseOn(false);
+				selectLocation(null, null);
+			}}
+			onClick={room}
 			className={
 				selectedLocation.long === long && selectedLocation.lat === lat
 					? 'active_infoCard'
