@@ -9,16 +9,16 @@ interface IReservation {
 	star: number;
 	price: string;
 	total: string;
+  startDate: string; 
+  endDate: string; 
+  noOfGuests: string;
 }
 
 const Reservation: FC<IReservation> = (props) => {
-	const { star, price, total } = props;
+	const { star, price, total, startDate, endDate, noOfGuests } = props;
 
-	const router = useRouter();
-	const { startDate, endDate, noOfGuests } = router.query;
-
-	const formattedStartDate = format( new Date(startDate as string), 'dd.MM.yyyy');
-	const formattedEndDate = format(new Date(endDate as string), 'dd.MM.yyyy');
+	const formattedStartDate = format( new Date(startDate), 'dd.MM.yyyy');
+	const formattedEndDate = format(new Date(endDate), 'dd.MM.yyyy');
 
 	return (
 		<div className='shadow-2xl rounded-xl p-5 m-5 min-w-fit border h-fit'>

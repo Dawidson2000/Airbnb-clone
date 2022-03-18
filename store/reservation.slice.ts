@@ -3,9 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const reservationSlice = createSlice({
   name: 'reservation',
   initialState: {
-    startDate: null, 
-    endDate: null, 
-    noOfGuests: 0
+    startDate: '', 
+    endDate: '', 
+    noOfGuests: ''
   },
   reducers: {
     setReservation: (state, action) => {
