@@ -8,6 +8,7 @@ import {
 interface IDetail {
 	title: string;
 	description: string;
+  calender: JSX.Element;
 }
 
 const Details: FC<IDetail> = (props) => {
@@ -50,7 +51,7 @@ const Details: FC<IDetail> = (props) => {
 					</div>
 				</div>
 			</div>
-			<div className='border-b border-gray-300 py-5'>
+			<div className='border-b border-gray-300 py-5 mb-5'>
 				<p>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla a risus
 					et arcu rhoncus efficitur. Aenean finibus elit et nulla ultrices, vel
@@ -64,6 +65,7 @@ const Details: FC<IDetail> = (props) => {
 					leo sed pulvinar.
 				</p>
 			</div>
+      {props.calender}
 		</section>
 	);
 };

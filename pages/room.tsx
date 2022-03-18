@@ -42,13 +42,28 @@ const Room: NextPage<IRoom> = (props) => {
 	const { img, location, title, description, star, price, total, long, lat } =
 		props.rooms[id as unknown as number];
 
+	const calender = (
+		<div className='flex justify-center mx-auto rounded-xl'>
+			<DateRangePicker
+				ranges={[delectionRange]}
+				minDate={new Date()}
+				rangeColors={['#FD5b62']}
+				onChange={handleSelect}
+			/>
+		</div>
+	);
+
 	return (
 		<>
 			<Header />
 			<main className='max-w-7xl mx-auto px-8 sm:px-16 bg-white rounded-2xl my-5 shadow-md'>
 				<Info location={location} title={title} star={star} img={img} />
 				<div className='flex flex-col lg:flex-row'>
-					<Details title={title} description={description} />
+					<Details
+						title={title}
+						description={description}
+						calender={calender}
+					/>
 					<Reservation
 						star={star}
 						price={price}
@@ -56,14 +71,6 @@ const Room: NextPage<IRoom> = (props) => {
 						startDate={checkInDate.toISOString()}
 						endDate={checkOutDate.toISOString()}
 						noOfGuests={noOfGuests as string}
-					/>
-				</div>
-				<div className='flex justify-center mx-auto rounded-xl'>
-					<DateRangePicker
-						ranges={[delectionRange]}
-						minDate={new Date()}
-						rangeColors={['#FD5b62']}
-						onChange={handleSelect}
 					/>
 				</div>
 			</main>
