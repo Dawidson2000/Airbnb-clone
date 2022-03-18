@@ -23,12 +23,13 @@ interface IInfoCard {
 const InfoCard: FC<IInfoCard> = (props) => {
 	const { id, img, location, title, description, star, price, total, long, lat } =
 		props;
-
+  
 	const cardRef = useRef<HTMLDivElement>(null);
 
 	const [isMouseOn, setIsMouseOn] = useState(false);
 
 	const router = useRouter();
+  const { startDate, endDate, noOfGuests } = router.query;
 
 	const dispatch = useDispatch();
 
@@ -51,7 +52,10 @@ const InfoCard: FC<IInfoCard> = (props) => {
 		router.push({
 			pathname: 'room',
       query: {
-        id
+        id,
+        startDate,
+        endDate,
+        noOfGuests
       }
 		});
 	};

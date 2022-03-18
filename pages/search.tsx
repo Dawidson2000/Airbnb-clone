@@ -1,11 +1,13 @@
 import { format } from 'date-fns';
 import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import InfoCard from '../components/InfoCard';
 import Map from '../components/Map';
+import { reservationActions } from '../store/reservation.slice';
 
 export interface ISearch {
 	searchResults: {
@@ -23,10 +25,21 @@ export interface ISearch {
 }
 
 const Search: NextPage<ISearch> = (props) => {
-  console.log(props.searchResults);
 	const router = useRouter();
-
 	const { location, startDate, endDate, noOfGuests } = router.query;
+
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(reservationActions.setReservation({
+      reservation: {
+        startDate,
+        endDate,
+        noOfGuests
+      }
+    }))
+  }, [startDate, endDate, noOfGuests])
+ 
 
 	const formattedStartDate = format(
 		new Date(startDate as string),
