@@ -2,6 +2,7 @@ import { GetServerSideProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
+import Calendar from '../components/Calendar';
 import Header from '../components/Header';
 import Details from '../components/Room/Details';
 import Info from '../components/Room/Info';
@@ -23,33 +24,23 @@ interface IRoom {
 
 const Room: NextPage<IRoom> = (props) => {
 	const router = useRouter();
-	const { id, startDate, endDate, noOfGuests } = router.query;
+	const { id, noOfGuests } = router.query;
 
-	const [checkInDate, setCheckInDate] = useState(new Date(startDate as string));
-	const [checkOutDate, setChekcOutDate] = useState(new Date(endDate as string));
+	const [checkInDate, setCheckInDate] = useState(new Date());
+	const [checkOutDate, setChekcOutDate] = useState(new Date());
 
-	const delectionRange = {
-		startDate: checkInDate,
-		endDate: checkOutDate,
-		key: 'selection',
-	};
+  const setDates = (checkIn: Date, checkOut: Date) => {
+    setCheckInDate(checkIn);
+    setChekcOutDate(checkOut)
+  };
 
-	const handleSelect = (ranges: any) => {
-		setCheckInDate(ranges.selection.startDate);
-		setChekcOutDate(ranges.selection.endDate);
-	};
-
+	
 	const { img, location, title, description, star, price, total, long, lat } =
 		props.rooms[id as unknown as number];
 
 	const calender = (
 		<div className='flex justify-center mx-auto rounded-xl'>
-			<DateRangePicker
-				ranges={[delectionRange]}
-				minDate={new Date()}
-				rangeColors={['#FD5b62']}
-				onChange={handleSelect}
-			/>
+			<Calendar onReservationTime={setDates}/>
 		</div>
 	);
 

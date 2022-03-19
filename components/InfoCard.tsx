@@ -53,8 +53,6 @@ const InfoCard: FC<IInfoCard> = (props) => {
 			pathname: 'room',
       query: {
         id,
-        startDate,
-        endDate,
         noOfGuests
       }
 		});

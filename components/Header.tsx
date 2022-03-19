@@ -12,6 +12,7 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { DateRangePicker } from 'react-date-range';
 import { useRouter } from 'next/router';
+import Calendar from './Calendar';
 
 interface IHeader {
   placeholder?: string,
@@ -23,13 +24,12 @@ const Header: FC<IHeader> = (props) => {
 	const [startDate, setStartDate] = useState(new Date());
 	const [endDate, setEndDate] = useState(new Date());
 
-	const router = useRouter();
+  const setDates = (checkIn: Date, checkOut: Date) => {
+    setStartDate(checkIn);
+    setEndDate(checkOut)
+  };
 
-	const delectionRange = {
-		startDate,
-		endDate,
-		key: 'selection',
-	};
+	const router = useRouter();
 
 	const changeSearchInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchInput(e.target.value);
@@ -54,11 +54,6 @@ const Header: FC<IHeader> = (props) => {
       }
     });
   };
-
-	const handleSelect = (ranges: any) => {
-		setStartDate(ranges.selection.startDate);
-		setEndDate(ranges.selection.endDate);
-	};
 
 	return (
 		<header className='sticky top-0 z-50 grid grid-cols-3 shadow-md p-5 md:px-10 bg-white'>
@@ -93,12 +88,7 @@ const Header: FC<IHeader> = (props) => {
 			</div>
 			{searchInput && (
 				<div className='flex flex-col col-span-3 mx-auto rounded-xl shadow-sm p-4'>
-					<DateRangePicker
-						ranges={[delectionRange]}
-						minDate={new Date()}
-						rangeColors={['#FD5b62']}
-						onChange={handleSelect}
-					/>
+					<Calendar onReservationTime={setDates}/>
 					<div className='flex items-center border-b mb-4'>
 						<h2 className='text-2xl flex-grow font-semibold'>
 							Number of Guests
