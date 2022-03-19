@@ -1,4 +1,5 @@
 import { format } from 'date-fns';
+import { longitudeKeys } from 'geolib';
 import { GetServerSideProps, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -48,6 +49,11 @@ const Search: NextPage<ISearch> = (props) => {
 	const formattedEndDate = format(new Date(endDate as string), 'dd MMMM yy');
 	const range = `${formattedStartDate} - ${formattedEndDate}`;
 
+  const coordinates = props.searchResults.map(result=>({
+    longitude: result.long,
+    latitude: result.lat
+  }));
+
 	return (
 		<>
 			<Header placeholder={`${location} | ${range} | ${noOfGuests} quests`} />
@@ -74,7 +80,7 @@ const Search: NextPage<ISearch> = (props) => {
 				</section>
 
 				<section className='hidden xl:inline-flex xl:min-w-[600px]'>
-					<Map searchResults={props.searchResults} />
+					<Map coordinates={coordinates} />
 				</section>
 			</main>
 			<Footer />
@@ -86,8 +92,8 @@ export default Search;
 
 export const getServerSideProps: GetServerSideProps = async () => {
 	const response = await fetch('https://links.papareact.com/isz');
-	const aaa = await response.json();
-	const searchResults = aaa.map((item: any, index: number) => ({id: index, ...item }));
+	const data = await response.json();
+	const searchResults = data.map((item: any, index: number) => ({id: index, ...item }));
 
 	return {
 		props: {

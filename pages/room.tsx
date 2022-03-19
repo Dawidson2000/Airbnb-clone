@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import Calendar from '../components/Calendar';
 import Header from '../components/Header';
+import Map from '../components/Map';
 import Details from '../components/Room/Details';
 import Info from '../components/Room/Info';
 import Reservation from '../components/Room/Reservation';
@@ -29,25 +30,24 @@ const Room: NextPage<IRoom> = (props) => {
 	const [checkInDate, setCheckInDate] = useState(new Date());
 	const [checkOutDate, setChekcOutDate] = useState(new Date());
 
-  const setDates = (checkIn: Date, checkOut: Date) => {
-    setCheckInDate(checkIn);
-    setChekcOutDate(checkOut)
-  };
+	const setDates = (checkIn: Date, checkOut: Date) => {
+		setCheckInDate(checkIn);
+		setChekcOutDate(checkOut);
+	};
 
-	
 	const { img, location, title, description, star, price, total, long, lat } =
 		props.rooms[id as unknown as number];
 
 	const calender = (
 		<div className='flex justify-center mx-auto rounded-xl'>
-			<Calendar onReservationTime={setDates}/>
+			<Calendar onReservationTime={setDates} />
 		</div>
 	);
 
 	return (
 		<>
 			<Header />
-			<main className='max-w-7xl mx-auto px-8 sm:px-16 bg-white rounded-2xl my-5 shadow-md'>
+			<main className='max-w-7xl mx-auto px-8 sm:px-16 bg-white rounded-2xl my-5 shadow-md min-h-fit'>
 				<Info location={location} title={title} star={star} img={img} />
 				<div className='flex flex-col lg:flex-row'>
 					<Details
@@ -64,6 +64,11 @@ const Room: NextPage<IRoom> = (props) => {
 						noOfGuests={noOfGuests as string}
 					/>
 				</div>
+				<section className='w-full h-96 hidden lg:block pb-32'>
+					<h2 className='text-3xl font-semibold'>Where will you stay</h2>
+					<span className='block my-5'>{location}</span>
+					<Map coordinates={[{ longitude: long, latitude: lat }]} />
+				</section>
 			</main>
 		</>
 	);

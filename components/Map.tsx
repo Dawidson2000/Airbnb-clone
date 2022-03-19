@@ -8,31 +8,31 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
 import { locationActions } from '../store/location-slice';
 
-const Map: FC<ISearch> = (props) => {
+interface IMap {
+	coordinates: {
+		longitude: number;
+		latitude: number;
+	}[];
+}
+
+const Map: FC<IMap> = (props) => {
 	const [selectedLocation, setSelectedLocation] = useState<any>({});
 	const location = useSelector((state: RootState) => state.location.location);
 	const mapRef = useRef<MapRef>(null);
 
-	const coordinates = props.searchResults.map((result) => ({
-		longitude: result.long,
-		latitude: result.lat,
-	}));
-
-	const center = getCenter(coordinates) as {
+	const center = getCenter(props.coordinates) as {
 		longitude: number;
 		latitude: number;
 	};
 
 	const [viewport, setViewport] = useState({
-		width: '100%',
-		heigth: '100%',
 		latitude: center.latitude,
 		longitude: center.longitude,
 		zoom: 11,
 	});
 
 	const snapToLocation = useCallback((long, lat) => {
-		mapRef.current?.flyTo({ center: [long, lat]});
+		mapRef.current?.flyTo({ center: [long, lat] });
 	}, []);
 
 	const dispatch = useDispatch();
@@ -60,31 +60,31 @@ const Map: FC<ISearch> = (props) => {
 			{...viewport}
 			onMove={(evt) => setViewport(evt.viewState as any)}
 		>
-			{props.searchResults.map((result) => (
-				<div key={result.long} className='cursor-pointer'>
-					<Marker longitude={result.long} latitude={result.lat}>
+			{props.coordinates.map((result) => (
+				<div key={result.longitude} className='cursor-pointer'>
+					<Marker longitude={result.longitude} latitude={result.latitude}>
 						<LocationMarkerIcon
 							className={
-								location.long == result.long && location.lat === result.lat
+								location.long == result.longitude && location.lat === result.latitude
 									? 'active_marker'
 									: 'marker'
 							}
 							onClick={() => {
 								setSelectedLocation(result);
-								selectLocation(result.long, result.lat);
+								selectLocation(result.longitude, result.latitude);
 							}}
 							aria-label='location-marker'
 						/>
 					</Marker>
-					{selectedLocation.lat === result.lat && (
+					{selectedLocation.lat === result.latitude && (
 						<Popup
-							longitude={result.long}
-							latitude={result.lat}
+							longitude={result.longitude}
+							latitude={result.latitude}
 							closeOnClick={true}
 							closeButton={false}
 							offset={[0, -15]}
 						>
-							{result.title}
+							XDDDD
 						</Popup>
 					)}
 				</div>
